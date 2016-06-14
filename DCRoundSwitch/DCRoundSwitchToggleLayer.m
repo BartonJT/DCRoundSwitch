@@ -17,16 +17,9 @@
 @synthesize clip;
 @synthesize labelFont;
 
-- (void)dealloc
-{
-	[onString release];
-	[offString release];
-	[onTintColor release];
-
-	[super dealloc];
-}
-
-- (id)initWithOnString:(NSString *)anOnString offString:(NSString *)anOffString onTintColor:(UIColor *)anOnTintColor
+- (instancetype)initWithOnString:(NSString *)anOnString
+					   offString:(NSString *)anOffString
+					 onTintColor:(UIColor *)anOnTintColor
 {
 	if ((self = [super init]))
 	{
@@ -51,7 +44,11 @@
 
 	if (self.clip)
 	{
-		UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-self.frame.origin.x + 0.5, 0, self.bounds.size.width / 2.0 + self.bounds.size.height / 2.0 - 1.5, self.bounds.size.height) cornerRadius:self.bounds.size.height / 2.0];
+		UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-self.frame.origin.x + 0.5,
+                                                                                      0,
+                                                                                      self.bounds.size.width / 2.0 + self.bounds.size.height / 2.0 - 1.5,
+                                                                                      self.bounds.size.height)
+                                                              cornerRadius:self.bounds.size.height / 2.0];
 		CGContextAddPath(context, bezierPath.CGPath);
 		CGContextClip(context);
 	}
@@ -80,21 +77,36 @@
 
 	UIGraphicsPushContext(context);
 
+	// String attributes
+	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:NSFontAttributeName, self.labelFont, nil];
+	
 	// 'ON' state label (self.onString)
-	CGSize onTextSize = [self.onString sizeWithFont:self.labelFont];
+	CGSize onTextSize = [self.onString sizeWithAttributes:attributes];
 	CGPoint onTextPoint = CGPointMake((textSpaceWidth - onTextSize.width) / 2.0 + knobRadius * .15, floorf((self.bounds.size.height - onTextSize.height) / 2.0) + 1.0);
-	[[UIColor colorWithWhite:0.45 alpha:1.0] set]; // .2 & .4
-	[self.onString drawAtPoint:CGPointMake(onTextPoint.x, onTextPoint.y - 1.0) withFont:self.labelFont];
-	[[UIColor whiteColor] set];
-	[self.onString drawAtPoint:onTextPoint withFont:self.labelFont];
+	UIColor *fontColour = [UIColor colorWithWhite:0.45 alpha:1.0];
+	
+	[fontColour set]; // .2 & .4
+	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	[self.onString drawAtPoint:CGPointMake(onTextPoint.x, onTextPoint.y - 1.0) withAttributes:attributes];
+	
+	fontColour = [UIColor whiteColor];
+	[fontColour set]; // .2 & .4
+	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	[self.onString drawAtPoint:onTextPoint withAttributes:attributes];
 
 	// 'OFF' state label (self.offString)
-	CGSize offTextSize = [self.offString sizeWithFont:self.labelFont];
+	CGSize offTextSize = [self.offString sizeWithAttributes:attributes];
 	CGPoint offTextPoint = CGPointMake(textSpaceWidth + (textSpaceWidth - offTextSize.width) / 2.0 + knobRadius * .86, floorf((self.bounds.size.height - offTextSize.height) / 2.0) + 1.0);
-	[[UIColor whiteColor] set];
-	[self.offString drawAtPoint:CGPointMake(offTextPoint.x, offTextPoint.y + 1.0) withFont:self.labelFont];
-	[[UIColor colorWithWhite:0.52 alpha:1.0] set];
-	[self.offString drawAtPoint:offTextPoint withFont:self.labelFont];
+	
+	fontColour = [UIColor whiteColor];
+	[fontColour set]; // .2 & .4
+	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	[self.offString drawAtPoint:CGPointMake(offTextPoint.x, offTextPoint.y + 1.0) withAttributes:attributes];
+	
+	fontColour = [UIColor colorWithWhite:0.52 alpha:1.0];
+	[fontColour set]; // .2 & .4
+	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	[self.offString drawAtPoint:offTextPoint withAttributes:attributes];
 
 	UIGraphicsPopContext();
 }

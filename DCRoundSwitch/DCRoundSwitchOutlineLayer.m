@@ -10,6 +10,7 @@
 //
 
 #import "DCRoundSwitchOutlineLayer.h"
+#import <UIKit/UIKit.h>
 
 @implementation DCRoundSwitchOutlineLayer
 
