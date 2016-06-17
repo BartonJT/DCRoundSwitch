@@ -85,13 +85,11 @@
 	CGPoint onTextPoint = CGPointMake((textSpaceWidth - onTextSize.width) / 2.0 + knobRadius * .15, floorf((self.bounds.size.height - onTextSize.height) / 2.0) + 1.0);
 	UIColor *fontColour = [UIColor colorWithWhite:0.45 alpha:1.0];
 	
-	[fontColour set]; // .2 & .4
-	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	attributes[NSForegroundColorAttributeName] = fontColour;
 	[self.onString drawAtPoint:CGPointMake(onTextPoint.x, onTextPoint.y - 1.0) withAttributes:attributes];
 	
 	fontColour = [UIColor whiteColor];
-	[fontColour set]; // .2 & .4
-	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	attributes[NSForegroundColorAttributeName] = fontColour;
 	[self.onString drawAtPoint:onTextPoint withAttributes:attributes];
 
 	// 'OFF' state label (self.offString)
@@ -99,13 +97,11 @@
 	CGPoint offTextPoint = CGPointMake(textSpaceWidth + (textSpaceWidth - offTextSize.width) / 2.0 + knobRadius * .86, floorf((self.bounds.size.height - offTextSize.height) / 2.0) + 1.0);
 	
 	fontColour = [UIColor whiteColor];
-	[fontColour set]; // .2 & .4
-	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	attributes[NSForegroundColorAttributeName] = fontColour;
 	[self.offString drawAtPoint:CGPointMake(offTextPoint.x, offTextPoint.y + 1.0) withAttributes:attributes];
 	
 	fontColour = [UIColor colorWithWhite:0.52 alpha:1.0];
-	[fontColour set]; // .2 & .4
-	[attributes setObject:fontColour forKey:NSForegroundColorAttributeName];
+	attributes[NSForegroundColorAttributeName] = fontColour;
 	[self.offString drawAtPoint:offTextPoint withAttributes:attributes];
 
 	UIGraphicsPopContext();
